@@ -15,11 +15,11 @@
  */
 package osgi.cdi.faces;
 
-import javax.faces.application.ViewHandler;
-import javax.faces.application.ViewHandlerWrapper;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.faces.application.ViewHandler;
+import jakarta.faces.application.ViewHandlerWrapper;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
 
 import osgi.extender.cdi.scopes.ScopeListener;
 

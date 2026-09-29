@@ -15,8 +15,8 @@
  */
 package osgi.cdi.faces;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletContext;
 
 import org.osgi.framework.BundleContext;
 

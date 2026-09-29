@@ -19,11 +19,12 @@ package eclipselink.extender;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.persistence.spi.PersistenceUnitTransactionType;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.config.TargetServer;
 
 /**
  * Extender class for eclipse link persistence provider.
@@ -35,11 +36,17 @@ public class OurPersistenceProvider extends org.eclipse.persistence.jpa.Persiste
             PersistenceUnitInfo info, @SuppressWarnings("rawtypes") Map properties) {
         Map<String, Object> props = new HashMap<>();
         if (properties != null) {
-            props.putAll(props);
+            props.putAll(properties);
         }
         // Check if we are using JTA. If so, overwrite the platform.
         if (PersistenceUnitTransactionType.JTA.equals(info.getTransactionType())) {
             props.put(PersistenceUnitProperties.TARGET_SERVER, OurPlatForm.class.getName());
+        }
+        else if (!props.containsKey(PersistenceUnitProperties.TARGET_SERVER) &&
+                !info.getProperties().containsKey(PersistenceUnitProperties.TARGET_SERVER)) {
+            // Otherwise EclipseLink detects the application server it runs in (like GlassFish) and
+            // uses its platform, which is not usable from OSGi bundles.
+            props.put(PersistenceUnitProperties.TARGET_SERVER, TargetServer.None);
         }
         return super.createContainerEntityManagerFactory(info, props);
     }    

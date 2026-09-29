@@ -18,6 +18,7 @@ package eclipselink.extender;
 
 import org.eclipse.persistence.platform.server.ServerPlatformBase;
 import org.eclipse.persistence.sessions.DatabaseSession;
+import org.eclipse.persistence.sessions.ExternalTransactionController;
 
 /**
  * Our extension/implementation of a server platform for eclipselink.
@@ -29,7 +30,7 @@ public class OurPlatForm extends ServerPlatformBase {
     }
 
     @Override
-    public Class<?> getExternalTransactionControllerClass() {
+    public Class<? extends ExternalTransactionController> getExternalTransactionControllerClass() {
         return TransactionController.class;
     }
 }

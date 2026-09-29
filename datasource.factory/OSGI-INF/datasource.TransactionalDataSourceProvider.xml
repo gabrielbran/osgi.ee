@@ -5,5 +5,5 @@
       <provide interface="org.osgi.service.cm.ManagedServiceFactory"/>
    </service>
    <property name="service.pid" value="XAdatasource"/>
-   <reference bind="setTransactionManager" cardinality="1..1" interface="javax.transaction.TransactionManager" name="TransactionManager" policy="static"/>
+   <reference bind="setTransactionManager" cardinality="1..1" interface="jakarta.transaction.TransactionManager" name="TransactionManager" policy="static"/>
 </scr:component>

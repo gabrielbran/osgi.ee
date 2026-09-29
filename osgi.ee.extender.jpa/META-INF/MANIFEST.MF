@@ -2,30 +2,26 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JPA extender bundle
 Bundle-SymbolicName: osgi.ee.extender.jpa
-Bundle-Version: 1.0.19
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: osgi.jta.servlet.filter;version="1.0.0";uses:="javax.servlet"
-Import-Package: javax.faces.context;version="2.2.0";resolution:=optional,
- javax.faces.event;version="2.2.0";resolution:=optional,
- javax.persistence;version="2.1.0",
- javax.persistence.criteria;version="2.1.0",
- javax.persistence.metamodel;version="2.1.0",
- javax.persistence.spi;version="2.1.0",
- javax.security.auth,
- javax.servlet;version="3.0.0";resolution:=optional,
- javax.servlet.http;version="3.0.0";resolution:=optional,
+Bundle-Version: 2.0.0
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=21))"
+Export-Package: osgi.jta.servlet.filter;version="2.0.0";uses:="jakarta.servlet"
+Import-Package: jakarta.persistence;version="[3.2,4)",
+ jakarta.persistence.criteria;version="[3.2,4)",
+ jakarta.persistence.metamodel;version="[3.2,4)",
+ jakarta.persistence.spi;version="[3.2,4)",
+ jakarta.servlet;version="[6.0,7)";resolution:=optional,
+ jakarta.servlet.http;version="[6.0,7)";resolution:=optional,
+ jakarta.transaction;version="[2.0,3)",
  javax.sql,
- javax.transaction;version="1.1.0",
- javax.transaction.xa;version="1.1.0",
- javax.xml.parsers,
+ javax.transaction.xa,
  javax.xml.transform,
+ javax.xml.transform.dom,
  javax.xml.transform.sax,
  javax.xml.transform.stream,
- org.osgi.framework;version="1.8.0",
- org.osgi.framework.wiring;version="1.2.0",
- org.osgi.service.cm;version="1.5.0",
- org.osgi.service.jpa;version="1.0.0",
- org.osgi.util.tracker;version="1.5.1",
+ org.osgi.framework;version="[1.8,2)",
+ org.osgi.framework.wiring;version="[1.2,2)",
+ org.osgi.service.cm;version="[1.5,2)",
+ org.osgi.util.tracker;version="[1.5,2)",
  org.w3c.dom,
  org.xml.sax
 Service-Component: OSGI-INF/osgi.extender.jta.impl.TransactionComponent.xml,

@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceUnitInfo;
 
 import org.osgi.framework.Bundle;
 

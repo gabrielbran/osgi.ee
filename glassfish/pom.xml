@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.avineas.osgi.ee</groupId>
+        <artifactId>osgi.ee-parent</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>osgi.ee-glassfish</artifactId>
+    <packaging>pom</packaging>
+    <name>Bundles for GlassFish ${glassfish.version}</name>
+    <description>
+        Collects the bundles to drop into the autodeploy/bundles directory of a GlassFish domain.
+        Next to the extenders this includes Apache Felix SCR (declarative services), which
+        GlassFish 8 does not ship, and its dependencies.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>osgi.ee.extender.jpa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>osgi.ee.extender.cdi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>eclipselink.extender</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>datasource.factory</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr</artifactId>
+            <version>${felix.scr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.util.promise</artifactId>
+            <version>${osgi.promise.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.util.function</artifactId>
+            <version>${osgi.function.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>collect-bundles</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/bundles</outputDirectory>
+                            <excludeTransitive>true</excludeTransitive>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>zip-bundles</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/bundles.xml</descriptor>
+                            </descriptors>
+                            <finalName>osgi.ee-glassfish-${glassfish.version}-${project.version}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

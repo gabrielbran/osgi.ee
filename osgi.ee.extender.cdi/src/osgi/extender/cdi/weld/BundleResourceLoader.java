@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 
 import org.jboss.weld.resources.spi.ResourceLoader;
+import org.jboss.weld.resources.spi.ResourceLoadingException;
 import org.osgi.framework.Bundle;
 
 import osgi.extender.cdi.Helper;
@@ -56,7 +57,13 @@ class BundleResourceLoader implements ResourceLoader {
     
     @Override
     public Class<?> classForName(String name) {
-        return Helper.loadClass(loaders(), name);
+        try {
+            return Helper.loadClass(loaders(), name);
+        } catch (RuntimeException exc) {
+            // Weld probes for optional classes (like jakarta.xml.ws.WebServiceRef) and only
+            // handles this exception type as "class not available".
+            throw new ResourceLoadingException(exc.getMessage(), exc.getCause());
+        }
     }
 
     @Override

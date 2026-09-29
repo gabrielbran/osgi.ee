@@ -23,7 +23,7 @@ import java.util.Hashtable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.Bean;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -130,7 +130,7 @@ class BeanExporter {
                     }
                     else if ("Character".equals(type)) {
                         Integer c = Integer.valueOf(stringValue);
-                        value = new Character(Character.toChars(c)[0]);
+                        value = Character.valueOf(Character.toChars(c)[0]);
                     }
                     else {
                         throw new RuntimeException("type \"" + type + "\" is an unknown conversion type");

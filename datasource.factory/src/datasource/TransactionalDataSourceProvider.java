@@ -16,9 +16,9 @@
  */
 package datasource;
 
-import javax.transaction.TransactionManager;
+import jakarta.transaction.TransactionManager;
 
-import org.apache.commons.dbcp.managed.BasicManagedDataSource;
+import org.apache.commons.dbcp2.managed.BasicManagedDataSource;
 import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,7 +44,7 @@ public class TransactionalDataSourceProvider extends BasicDataSourceProvider<Bas
     @Override
     BasicManagedDataSource getDataSource() {
         BasicManagedDataSource ds = new BasicManagedDataSource();
-        ds.setTransactionManager(transactionManager);
+        ds.setTransactionManager(JtaAdapter.adapt(transactionManager));
         return ds;
     }
 }

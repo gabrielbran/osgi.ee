@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.avineas.osgi.ee</groupId>
+    <artifactId>osgi.ee-parent</artifactId>
+    <version>2.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>OSGi Jakarta EE extenders</name>
+    <description>
+        Extenders for JPA/JTA and CDI in an OSGi environment, targeting the OSGi runtime
+        (Apache Felix) embedded in GlassFish 8.0.4 (Jakarta EE 11, Java 21).
+    </description>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <modules>
+        <module>osgi.ee.extender.jpa</module>
+        <module>osgi.ee.extender.cdi</module>
+        <module>eclipselink.extender</module>
+        <module>datasource.factory</module>
+        <module>osgi.ee.sample</module>
+        <module>glassfish</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+
+        <!-- Versions as shipped by GlassFish 8.0.4 (glassfish/modules). -->
+        <glassfish.version>8.0.4</glassfish.version>
+        <jakartaee.version>11.0.0</jakartaee.version>
+        <weld.version>6.0.4.Final</weld.version>
+        <eclipselink.version>5.0.1</eclipselink.version>
+
+        <!-- OSGi APIs. GlassFish 8.0.4 runs Apache Felix 7.0.5 (OSGi R8 core). -->
+        <osgi.core.version>8.0.0</osgi.core.version>
+        <osgi.cm.version>1.6.1</osgi.cm.version>
+        <osgi.tracker.version>1.5.4</osgi.tracker.version>
+        <osgi.ds.annotations.version>1.5.1</osgi.ds.annotations.version>
+
+        <!-- Not part of GlassFish: deployed together with our bundles. -->
+        <!-- Felix SCR 2.1.x embeds the declarative services API (DS 1.4). The 2.2.x line needs the
+             separate org.osgi.service.component bundle, which cannot be resolved in GlassFish
+             since it requires the osgi.ee capability "JavaSE/compact1" (see below). -->
+        <felix.scr.version>2.1.30</felix.scr.version>
+        <!-- Newer versions require the osgi.ee capability "JavaSE/compact1", which GlassFish
+             does not declare (org.osgi.framework.system.capabilities in glassfish/config/osgi.properties). -->
+        <osgi.promise.version>1.1.1</osgi.promise.version>
+        <osgi.function.version>1.1.0</osgi.function.version>
+        <dbcp2.version>2.14.0</dbcp2.version>
+        <pool2.version>2.13.1</pool2.version>
+        <commons.logging.version>1.3.5</commons.logging.version>
+        <javax.transaction.version>1.3</javax.transaction.version>
+        <junit.version>5.13.4</junit.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-api</artifactId>
+                <version>${jakartaee.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-osgi-bundle</artifactId>
+                <version>${weld.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.jpa</artifactId>
+                <version>${eclipselink.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>osgi.core</artifactId>
+                <version>${osgi.core.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.cm</artifactId>
+                <version>${osgi.cm.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.util.tracker</artifactId>
+                <version>${osgi.tracker.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component.annotations</artifactId>
+                <version>${osgi.ds.annotations.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-dbcp2</artifactId>
+                <version>${dbcp2.version}</version>
+                <exclusions>
+                    <!-- Version 1.3.x of this artifact holds the javax.transaction API. It is
+                         embedded as javax.transaction:javax.transaction-api instead. -->
+                    <exclusion>
+                        <groupId>jakarta.transaction</groupId>
+                        <artifactId>jakarta.transaction-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons.logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>javax.transaction-api</artifactId>
+                <version>${javax.transaction.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <!-- The projects keep their Eclipse PDE layout: sources in src/, a hand written
+             META-INF/MANIFEST.MF and declarative services descriptors in OSGI-INF/. -->
+        <sourceDirectory>src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                    <exclude>**/package.html</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>.</directory>
+                <includes>
+                    <include>META-INF/**</include>
+                    <include>OSGI-INF/**</include>
+                </includes>
+                <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.14.0</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-Xlint:all,-serial,-processing</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.4.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.7.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

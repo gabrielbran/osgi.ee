@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterBeanDiscovery;
-import javax.enterprise.inject.spi.BeforeBeanDiscovery;
-import javax.enterprise.inject.spi.BeforeShutdown;
-import javax.enterprise.inject.spi.Extension;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterBeanDiscovery;
+import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
+import jakarta.enterprise.inject.spi.BeforeShutdown;
+import jakarta.enterprise.inject.spi.Extension;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

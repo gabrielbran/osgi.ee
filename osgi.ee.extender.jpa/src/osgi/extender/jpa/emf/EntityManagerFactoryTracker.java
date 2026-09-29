@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceUnitTransactionType;
-import javax.transaction.TransactionManager;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import jakarta.transaction.TransactionManager;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -35,7 +35,8 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.jpa.EntityManagerFactoryBuilder;
+
+import osgi.extender.jpa.service.JpaProperties;
 
 /**
  * Tracker for entity manager factories. Factories result automatically in an
@@ -47,7 +48,7 @@ import org.osgi.service.jpa.EntityManagerFactoryBuilder;
  */
 @Component
 public class EntityManagerFactoryTracker {
-    private static String UNITNAME = EntityManagerFactoryBuilder.JPA_UNIT_NAME;
+    private static String UNITNAME = JpaProperties.JPA_UNIT_NAME;
     private Map<EntityManagerFactory, Map<String, Object>> factories = new HashMap<>();
     private Map<EntityManagerFactory, ServiceRegistration<EntityManager>> entityManagers = new HashMap<>();
     private TransactionManager transactionManager;

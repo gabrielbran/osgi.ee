@@ -24,11 +24,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
-import javax.transaction.NotSupportedException;
-import javax.transaction.Status;
-import javax.transaction.SystemException;
-import javax.transaction.Transaction;
-import javax.transaction.TransactionManager;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.Status;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.Transaction;
+import jakarta.transaction.TransactionManager;
 
 /**
  * Transaction manager implementation. Very limited, but works in the case of

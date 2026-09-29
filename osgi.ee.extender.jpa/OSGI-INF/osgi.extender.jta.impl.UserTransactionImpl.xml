@@ -2,7 +2,7 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="osgi.extender.jta.impl.UserTransactionImpl">
    <implementation class="osgi.extender.jta.impl.UserTransactionImpl"/>
    <service>
-      <provide interface="javax.transaction.UserTransaction"/>
+      <provide interface="jakarta.transaction.UserTransaction"/>
    </service>
-   <reference bind="setTransactionManager" cardinality="1..1" interface="javax.transaction.TransactionManager" name="TransactionManager" policy="static"/>
+   <reference bind="setTransactionManager" cardinality="1..1" interface="jakarta.transaction.TransactionManager" name="TransactionManager" policy="static"/>
 </scr:component>

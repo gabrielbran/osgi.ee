@@ -16,7 +16,7 @@
  */
 package eclipselink.extender;
 
-import javax.transaction.TransactionManager;
+import jakarta.transaction.TransactionManager;
 
 import org.eclipse.persistence.transaction.JTATransactionController;
 import org.osgi.framework.BundleContext;

@@ -19,7 +19,7 @@ package osgi.extender.cdi.extension.context;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
-import javax.enterprise.context.spi.Contextual;
+import jakarta.enterprise.context.spi.Contextual;
 
 import osgi.extender.cdi.scopes.ExtenderContext;
 import osgi.extender.cdi.scopes.ScopeListener;

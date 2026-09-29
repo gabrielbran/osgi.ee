@@ -19,13 +19,13 @@ package osgi.extender.cdi.weld;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.weld.bootstrap.api.ServiceRegistry;
 import org.jboss.weld.bootstrap.api.helpers.SimpleServiceRegistry;
 import org.jboss.weld.bootstrap.spi.BeanDeploymentArchive;
 import org.jboss.weld.bootstrap.spi.BeansXml;
-import org.jboss.weld.bootstrap.spi.Deployment;
+import org.jboss.weld.bootstrap.spi.CDI11Deployment;
 import org.jboss.weld.bootstrap.spi.Metadata;
 import org.jboss.weld.serialization.spi.ProxyServices;
 import org.osgi.framework.Bundle;
@@ -37,7 +37,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author Arie van Wijngaarden
  */
-class OurDeployment implements Deployment {
+class OurDeployment implements CDI11Deployment {
     private BeanDeploymentArchive archive;
     private ServiceRegistry services;
     private Iterable<Metadata<Extension>> extensions;
@@ -73,6 +73,12 @@ class OurDeployment implements Deployment {
 
     @Override
     public BeanDeploymentArchive loadBeanDeploymentArchive(Class<?> clz) {
+        return archive;
+    }
+
+    @Override
+    public BeanDeploymentArchive getBeanDeploymentArchive(Class<?> clz) {
+        // There is only one archive per extended bundle.
         return archive;
     }
 }

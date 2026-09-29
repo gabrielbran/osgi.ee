@@ -18,7 +18,7 @@ package osgi.extender.jta.impl;
 
 import java.util.Dictionary;
 
-import javax.transaction.TransactionManager;
+import jakarta.transaction.TransactionManager;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;

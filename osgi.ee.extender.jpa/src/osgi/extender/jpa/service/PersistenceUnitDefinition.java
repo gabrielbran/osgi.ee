@@ -53,14 +53,15 @@ class PersistenceUnitDefinition {
     public boolean excludeUnlisted = true;
     public String cachingType;
     public String validationMode;
+    public String scope;
+    public List<String> qualifiers;
     public List<Property> properties;
 
     private static Result getTransformer(Result result) throws Exception {
         SAXTransformerFactory fact = (SAXTransformerFactory) TransformerFactory.newInstance();
-        String xsl = "/" + PersistenceUnitDefinition.class.getPackage().getName().replace(
-                ".", "/") + "/persistence.xsl";
         TransformerHandler handler;
-        try (InputStream xsls = PersistenceUnitDefinition.class.getClassLoader().getResourceAsStream(xsl)) {
+        // Relative to this class: works for any class loader, not only for bundle class loaders.
+        try (InputStream xsls = PersistenceUnitDefinition.class.getResourceAsStream("persistence.xsl")) {
             // Create the final pipeline.
             handler = fact.newTransformerHandler(new StreamSource(xsls));
             handler.setResult(result);

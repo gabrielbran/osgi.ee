@@ -22,9 +22,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.enterprise.context.spi.AlterableContext;
-import javax.enterprise.context.spi.Contextual;
-import javax.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.context.spi.AlterableContext;
+import jakarta.enterprise.context.spi.Contextual;
+import jakarta.enterprise.context.spi.CreationalContext;
 
 /**
  * Base class for contexts. Takes care of context management, meaning the caching of beans and

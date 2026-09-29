@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sample using the JPA and CDI extenders
+Bundle-SymbolicName: osgi.ee.sample
+Bundle-Version: 2.0.0
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=21))",
+ osgi.extender;filter:="(osgi.extender=osgi.cdi)"
+Meta-Persistence: META-INF/persistence.xml
+Export-Package: sample.api;version="2.0.0"
+Import-Package: jakarta.enterprise.context;version="[4.0,5)",
+ jakarta.inject;version="[2.0,3)",
+ jakarta.persistence;version="[3.2,4)",
+ jakarta.transaction;version="[2.0,3)",
+ org.osgi.framework;version="[1.8,2)",
+ org.osgi.util.tracker;version="[1.5,2)",
+ osgi.cdi.annotation;version="[2.0,3)"
+Bundle-Activator: sample.impl.Activator

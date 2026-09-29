@@ -18,7 +18,7 @@ package osgi.extender.jpa.service;
 
 import java.util.Map;
 
-import javax.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProvider;
 
 /**
  * Provider of a persistence provider (clear?). Part that allows to retrieve an available persistence provider

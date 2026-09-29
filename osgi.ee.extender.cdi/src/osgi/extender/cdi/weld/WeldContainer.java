@@ -23,11 +23,14 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.weld.bootstrap.WeldBootstrap;
+import org.jboss.weld.bootstrap.spi.BeanDiscoveryMode;
 import org.jboss.weld.bootstrap.spi.BeansXml;
+import org.jboss.weld.bootstrap.spi.Metadata;
+import org.jboss.weld.bootstrap.spi.Scanning;
 import org.jboss.weld.bootstrap.spi.Deployment;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -45,6 +48,55 @@ import osgi.extender.cdi.extension.ServiceExtension;
  * @author Arie van Wijngaarden
  */
 class WeldContainer {
+    /**
+     * Beans definition for bundles without a beans.xml file: all classes are beans.
+     */
+    private static final BeansXml ALL_BEANS_XML = new BeansXml() {
+        @Override
+        public List<Metadata<String>> getEnabledAlternativeStereotypes() {
+            return EMPTY_BEANS_XML.getEnabledAlternativeStereotypes();
+        }
+
+        @Override
+        public List<Metadata<String>> getEnabledAlternativeClasses() {
+            return EMPTY_BEANS_XML.getEnabledAlternativeClasses();
+        }
+
+        @Override
+        public List<Metadata<String>> getEnabledDecorators() {
+            return EMPTY_BEANS_XML.getEnabledDecorators();
+        }
+
+        @Override
+        public List<Metadata<String>> getEnabledInterceptors() {
+            return EMPTY_BEANS_XML.getEnabledInterceptors();
+        }
+
+        @Override
+        public Scanning getScanning() {
+            return EMPTY_BEANS_XML.getScanning();
+        }
+
+        @Override
+        public URL getUrl() {
+            return EMPTY_BEANS_XML.getUrl();
+        }
+
+        @Override
+        public BeanDiscoveryMode getBeanDiscoveryMode() {
+            return BeanDiscoveryMode.ALL;
+        }
+
+        @Override
+        public String getVersion() {
+            return EMPTY_BEANS_XML.getVersion();
+        }
+
+        @Override
+        public boolean isTrimmed() {
+            return EMPTY_BEANS_XML.isTrimmed();
+        }
+    };
     private WeldBootstrap boot;
     private Deployment deployment;
 
@@ -60,10 +112,13 @@ class WeldContainer {
         ServiceLoader<Extension> loader = ServiceLoader.load(Extension.class,
                 DelegatingClassLoader.from(toExtend));
         loader.forEach((l) -> extensions.add(l));
-        BeansXml beansXml = BeansXml.EMPTY_BEANS_XML;
+        // CDI 4 changed the meaning of an absent or empty beans.xml into bean discovery mode
+        // "annotated". This extender has always handled all classes of an extended bundle as
+        // beans in that case, which is kept. An explicit bean-discovery-mode is honoured.
+        BeansXml beansXml = ALL_BEANS_XML;
         URL url = toExtend.getEntry("/META-INF/beans.xml");
         if (url != null) {
-            beansXml = boot.parse(url);
+            beansXml = boot.parse(url, BeanDiscoveryMode.ALL);
         }
         deployment = new OurDeployment(toExtend, beansXml,
                 extensions.stream().map((e) -> new OurMetaData<>(e.getClass().getName(), e)).collect(Collectors.toList()));

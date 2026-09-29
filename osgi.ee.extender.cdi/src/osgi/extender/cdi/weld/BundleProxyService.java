@@ -16,11 +16,10 @@
  */
 package osgi.extender.cdi.weld;
 
-import java.util.ArrayList;
+import java.security.ProtectionDomain;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
+import org.jboss.weld.bootstrap.WeldBootstrap;
 import org.jboss.weld.serialization.spi.ProxyServices;
 import org.osgi.framework.Bundle;
 
@@ -29,21 +28,19 @@ import osgi.extender.cdi.Helper;
 
 /**
  * Proxy service handling for proxying beans. Basically, proxying is done using the combination
- * of the class loader from the bundle we are extending combined with the class loaders of the weld bundle(s).
+ * of the class loader from the bundle we are extending combined with the class loader of the weld bundle.
+ * Since Weld 3 the integrator defines the proxy classes. They are all defined in one class loader per
+ * extended bundle, which sees both the bean classes and the Weld internals that proxies refer to.
  */
 class BundleProxyService implements ProxyServices {
-    private Collection<ClassLoader> delegates;
+    private ProxyClassLoader loader;
 
     BundleProxyService(Bundle extendedBundle) {
-        delegates = new ArrayList<>();
         ClassLoader extendedBundleLoader = Helper.getWiring(extendedBundle).getClassLoader();
-        // Locate the correct bundle and get the class loader from it.
-        // Note that this is kind of dirty since we check on the symbolic name.
-        Collection<ClassLoader> found = Arrays.asList(extendedBundle.getBundleContext().getBundles()).stream().
-                filter((a) -> a.getSymbolicName().contains("weld")).
-                map((a) -> Helper.getLoader(a)).collect(Collectors.toList());
-        delegates.addAll(found);
-        delegates.add(extendedBundleLoader);
+        // The Weld bundle is the one providing the bootstrap package to us. It contains all Weld
+        // internals, among which the classes proxies are built upon.
+        ClassLoader weldLoader = WeldBootstrap.class.getClassLoader();
+        loader = new ProxyClassLoader(DelegatingClassLoader.from(Arrays.asList(weldLoader, extendedBundleLoader)));
     }
 
     @Override
@@ -52,13 +49,42 @@ class BundleProxyService implements ProxyServices {
     }
 
     @Override
-    public ClassLoader getClassLoader(Class<?> beanType) {
-        return DelegatingClassLoader.from(delegates);
+    public Class<?> defineClass(Class<?> originalClass, String className, byte[] classBytes, int off, int len) {
+        return defineClass(originalClass, className, classBytes, off, len, null);
     }
 
     @Override
-    @Deprecated
-    public Class<?> loadBeanClass(String name) {
-        throw new RuntimeException("(bugcheck): deprecated");
+    public Class<?> defineClass(Class<?> originalClass, String className, byte[] classBytes, int off, int len,
+            ProtectionDomain protectionDomain) {
+        return loader.define(className, classBytes, off, len, protectionDomain);
+    }
+
+    @Override
+    public Class<?> loadClass(Class<?> originalClass, String classBinaryName) throws ClassNotFoundException {
+        return loader.loadClass(classBinaryName);
+    }
+
+    /**
+     * Class loader holding the generated proxy classes.
+     */
+    private static class ProxyClassLoader extends ClassLoader {
+        static {
+            registerAsParallelCapable();
+        }
+
+        ProxyClassLoader(ClassLoader parent) {
+            super(parent);
+        }
+
+        Class<?> define(String name, byte[] bytes, int off, int len, ProtectionDomain domain) {
+            synchronized (getClassLoadingLock(name)) {
+                // The same proxy may be requested concurrently.
+                Class<?> clz = findLoadedClass(name);
+                if (clz == null) {
+                    clz = defineClass(name, bytes, off, len, domain);
+                }
+                return clz;
+            }
+        }
     }
 }

@@ -24,17 +24,17 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.el.CompositeELResolver;
-import javax.el.ELResolver;
-import javax.el.ExpressionFactory;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.faces.FacesException;
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationWrapper;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
+import jakarta.el.CompositeELResolver;
+import jakarta.el.ELResolver;
+import jakarta.el.ExpressionFactory;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationWrapper;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;

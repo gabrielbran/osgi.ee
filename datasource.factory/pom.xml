@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.avineas.osgi.ee</groupId>
+        <artifactId>osgi.ee-parent</artifactId>
+        <version>2.0.0</version>
+    </parent>
+
+    <artifactId>datasource.factory</artifactId>
+    <name>Datasource</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.cm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component.annotations</artifactId>
+        </dependency>
+        <!-- Embedded in the bundle (see Bundle-ClassPath), hence provided. -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>embed-libraries</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/lib</outputDirectory>
+                            <stripVersion>true</stripVersion>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.commons</groupId>
+                                    <artifactId>commons-dbcp2</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.commons</groupId>
+                                    <artifactId>commons-pool2</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>commons-logging</groupId>
+                                    <artifactId>commons-logging</artifactId>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>javax.transaction</groupId>
+                                    <artifactId>javax.transaction-api</artifactId>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

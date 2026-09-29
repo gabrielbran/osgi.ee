@@ -18,13 +18,13 @@ package osgi.jta.faces;
 
 import java.util.Iterator;
 
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerFactory;
-import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ExceptionQueuedEvent;
-import javax.servlet.ServletContext;
-import javax.transaction.TransactionManager;
+import jakarta.faces.context.ExceptionHandler;
+import jakarta.faces.context.ExceptionHandlerFactory;
+import jakarta.faces.context.ExceptionHandlerWrapper;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.event.ExceptionQueuedEvent;
+import jakarta.servlet.ServletContext;
+import jakarta.transaction.TransactionManager;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;

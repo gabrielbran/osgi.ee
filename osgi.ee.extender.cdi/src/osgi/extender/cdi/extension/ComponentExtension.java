@@ -19,12 +19,12 @@ package osgi.extender.cdi.extension;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.AfterDeploymentValidation;
-import javax.enterprise.inject.spi.Bean;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessBean;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.AfterDeploymentValidation;
+import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessBean;
 
 import osgi.cdi.annotation.ComponentScoped;
 

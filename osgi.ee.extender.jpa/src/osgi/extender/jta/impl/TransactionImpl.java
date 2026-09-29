@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.persistence.RollbackException;
-import javax.transaction.Status;
-import javax.transaction.Synchronization;
-import javax.transaction.Transaction;
+import jakarta.persistence.RollbackException;
+import jakarta.transaction.Status;
+import jakarta.transaction.Synchronization;
+import jakarta.transaction.Transaction;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 

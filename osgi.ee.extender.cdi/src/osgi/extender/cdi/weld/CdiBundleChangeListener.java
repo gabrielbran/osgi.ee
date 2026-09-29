@@ -19,7 +19,7 @@ package osgi.extender.cdi.weld;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.enterprise.inject.spi.BeanManager;
+import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;

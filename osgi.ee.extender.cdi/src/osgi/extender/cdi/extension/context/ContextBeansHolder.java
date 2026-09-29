@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.enterprise.context.spi.Contextual;
-import javax.enterprise.context.spi.CreationalContext;
+import jakarta.enterprise.context.spi.Contextual;
+import jakarta.enterprise.context.spi.CreationalContext;
 
 /**
  * Cache of beans. Actually a map that contains instances of beans for a specific context. It is used

@@ -18,11 +18,10 @@ package eclipselink.extender;
 
 import java.util.Hashtable;
 
-import javax.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProvider;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.jpa.EntityManagerFactoryBuilder;
 
 /**
  * Bundle activator. Just registers our persistence provider with the service registry.
@@ -33,7 +32,8 @@ public class Activator implements BundleActivator {
         TransactionController.initialize(context);
         OurPersistenceProvider provider = new OurPersistenceProvider();
         Hashtable<String, Object> dict = new Hashtable<>();
-        dict.put( EntityManagerFactoryBuilder.JPA_UNIT_PROVIDER, "org.eclipse.persistence.jpa.PersistenceProvider");
+        // Service property "osgi.unit.provider" as defined by the OSGi JPA specification.
+        dict.put("osgi.unit.provider", "org.eclipse.persistence.jpa.PersistenceProvider");
         context.registerService(PersistenceProvider.class, provider, dict);
     }
 

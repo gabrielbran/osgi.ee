@@ -16,6 +16,7 @@
  */
 package datasource;
 
+import java.time.Duration;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Deactivate;
@@ -50,7 +51,7 @@ abstract class BasicDataSourceProvider<T extends BasicDataSource> {
         Hashtable<String, Object> dict = new Hashtable<>();
         Enumeration<String> enumeration = properties.keys();
         T source = getDataSource();
-        source.setMaxWait(10000L);
+        source.setMaxWait(Duration.ofMillis(10000L));
         while (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
             Object value = properties.get(key);
@@ -71,7 +72,7 @@ abstract class BasicDataSourceProvider<T extends BasicDataSource> {
                 source.setValidationQuery(value.toString());
             }
             else if (key.equals("validation.timeout")) {
-                source.setValidationQueryTimeout(Integer.parseInt(value.toString()));
+                source.setValidationQueryTimeout(Duration.ofSeconds(Integer.parseInt(value.toString())));
             }
             else if (key.equals("pool.idle.min")) {
                 source.setMinIdle(Integer.parseInt(value.toString()));
@@ -80,10 +81,10 @@ abstract class BasicDataSourceProvider<T extends BasicDataSource> {
                 source.setMaxIdle(Integer.parseInt(value.toString()));
             }
             else if (key.equals("pool.wait")) {
-                source.setMaxWait(Long.parseLong(value.toString()));
+                source.setMaxWait(Duration.ofMillis(Long.parseLong(value.toString())));
             }
             else if (key.equals("pool.active.max")) {
-                source.setMaxActive(Integer.parseInt(value.toString()));
+                source.setMaxTotal(Integer.parseInt(value.toString()));
             }
             else {
                 dict.put(key, value);
@@ -110,15 +111,16 @@ abstract class BasicDataSourceProvider<T extends BasicDataSource> {
      * 
      * @param pid The managed service pid
      */
-    public void deleted(String pid) {
-        Registration<T> reg = registrations.get(pid);
+    public synchronized void deleted(String pid) {
+        Registration<T> reg = registrations.remove(pid);
         if (reg != null)
             destroy(reg);
     }
 
     @Deactivate
-    void deactivate() {
+    synchronized void deactivate() {
         registrations.values().stream().forEach((r) -> destroy(r));
+        registrations.clear();
     }
     
     /**

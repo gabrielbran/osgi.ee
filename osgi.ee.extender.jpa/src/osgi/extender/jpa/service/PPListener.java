@@ -16,7 +16,7 @@
  */
 package osgi.extender.jpa.service;
 
-import javax.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProvider;
 
 /**
  * Interface, internally used to handle the interaction between the bundle tracking part and the persistence provider

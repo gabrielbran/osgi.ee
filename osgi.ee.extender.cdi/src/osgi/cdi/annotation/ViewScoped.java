@@ -23,7 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.enterprise.context.NormalScope;
+import jakarta.enterprise.context.NormalScope;
 
 /**
  * View scope. Scope that remains active as long as the page does not move, meaning: the

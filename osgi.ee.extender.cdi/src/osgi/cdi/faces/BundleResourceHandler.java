@@ -25,13 +25,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.ResourceHandlerWrapper;
-import javax.faces.application.ViewResource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.application.ResourceHandlerWrapper;
+import jakarta.faces.application.ViewResource;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -122,7 +122,7 @@ public class BundleResourceHandler extends ResourceHandlerWrapper {
             // Find the faces registration.
             Optional<? extends ServletRegistration> registration =
                     context.getServletRegistrations().values().stream().
-                    filter((sr) -> "javax.faces.webapp.FacesServlet".equals(sr.getClassName())).findFirst();
+                    filter((sr) -> "jakarta.faces.webapp.FacesServlet".equals(sr.getClassName())).findFirst();
             // Check the mapping.
             String first = registration.get().getMappings().iterator().next();
             String p = null;

@@ -16,8 +16,8 @@
  */
 package osgi.cdi.faces;
 
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationFactory;
 
 /**
  * Application factory that takes care of the CDI handling related for JSF. Basically, this

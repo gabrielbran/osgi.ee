@@ -16,8 +16,8 @@
  */
 package osgi.extender.jpa.emf;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Synchronization;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Synchronization;
 
 /**
  * Synchronizer for basic transaction handling.

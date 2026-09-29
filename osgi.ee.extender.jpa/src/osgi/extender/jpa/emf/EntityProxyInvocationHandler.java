@@ -20,14 +20,14 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TransactionRequiredException;
-import javax.persistence.spi.PersistenceUnitTransactionType;
-import javax.transaction.Status;
-import javax.transaction.Synchronization;
-import javax.transaction.TransactionManager;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TransactionRequiredException;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
+import jakarta.transaction.Status;
+import jakarta.transaction.Synchronization;
+import jakarta.transaction.TransactionManager;
 
 /**
  * Invocation handler for an entity manager proxy. Since entity managers are not thread safe, this

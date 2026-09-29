@@ -20,11 +20,10 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProvider;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.osgi.service.jpa.EntityManagerFactoryBuilder;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
@@ -43,7 +42,7 @@ public class PersistenceProviderListener implements
     }
 
     private static String getName(ServiceReference<?> ref) {
-        String providerName = (String) ref.getProperty(EntityManagerFactoryBuilder.JPA_UNIT_PROVIDER);
+        String providerName = (String) ref.getProperty(JpaProperties.JPA_UNIT_PROVIDER);
         return providerName;
     }
     

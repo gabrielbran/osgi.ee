@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.enterprise.context.NormalScope;
+import jakarta.enterprise.context.NormalScope;
 
 /**
  * Component scope: a new normal scope that differs from the others so beans for this

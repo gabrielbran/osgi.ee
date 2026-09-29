@@ -16,7 +16,7 @@
  */
 package datasource;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.osgi.service.cm.ManagedServiceFactory;
 import org.osgi.service.component.annotations.Component;
 

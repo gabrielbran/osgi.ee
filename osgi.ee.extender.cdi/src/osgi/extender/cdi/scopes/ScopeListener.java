@@ -23,15 +23,15 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRequestEvent;
+import jakarta.servlet.ServletRequestListener;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
