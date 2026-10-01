@@ -9,7 +9,7 @@ bundles that GlassFish itself ships:
 | Jakarta Persistence | 3.2.0 | JPA extender, EclipseLink extender |
 | Jakarta Transactions | 2.0.1 | JPA extender, EclipseLink extender, data source factory |
 | Jakarta CDI | 4.1.0 | CDI extender |
-| Weld | 6.0.4.Final | CDI extender |
+| Weld | 6.0.4.Final | Not used: the CDI extender embeds its own copy of Weld 6.0.4 |
 | EclipseLink | 5.0.1 | EclipseLink extender |
 | Jakarta Faces (Mojarra) | 4.1.12 | CDI extender (optional) |
 | Jakarta Servlet | 6.1.0 | CDI extender, JPA extender (transaction filter) |
@@ -17,6 +17,13 @@ bundles that GlassFish itself ships:
 
 GlassFish 8 does not contain a declarative services runtime (SCR). Apache Felix SCR is therefore
 deployed together with the extenders.
+
+The CDI extender embeds its own copy of Weld instead of using the Weld bundle of GlassFish. Weld keeps
+its containers in static state (`SingletonProvider`), which GlassFish initializes for its applications
+(one container per application class loader). With shared Weld classes, the extender
+initialized that state first, after which GlassFish could not deploy any web application anymore
+("SingletonProvider is already initialized"). The GlassFish variant does not fit either: it keys the
+container on the application class loader, not on the container id used per extended bundle.
 
 ##### Building
 
@@ -30,7 +37,7 @@ This produces `glassfish/target/bundles/` and the same content zipped as
 | Bundle | Purpose |
 |---|---|
 | `osgi.ee.extender.jpa` | JPA extender (`Meta-Persistence`), `EntityManager` services, JTA transaction manager and `UserTransaction` |
-| `osgi.ee.extender.cdi` | CDI extender (Weld), `@Service`/`@ServiceReference` |
+| `osgi.ee.extender.cdi` | CDI extender, `@Service`/`@ServiceReference`. Contains Weld 6.0.4 |
 | `eclipselink.extender` | Registers EclipseLink as `PersistenceProvider` service |
 | `datasource.factory` | `DataSource` services from configuration (Commons DBCP 2, embedded) |
 | `org.apache.felix.scr` 2.1.30 | Declarative services runtime |
@@ -114,6 +121,16 @@ XA transactions after a crash. Use it with a single database, or deploy a full t
 - `hibernate.extender`: depends on `hibernate-osgi`, which no longer exists since Hibernate 6.
 - `slf4j-jul-bridge`: GlassFish logs via java.util.logging; redirecting that to SLF4J would take
   over the logging of the server.
+
+##### Using the services from Jakarta EE applications
+
+Applications deployed in GlassFish (WAR, EAR) see the packages exported by the bundles installed in
+its OSGi framework, including `org.osgi.framework`. An application can therefore look up the OSGi
+services, like the entity managers of the JPA extender and the beans exported with `@Service`. The
+`osgi.ee.sample.web` module shows how (`OsgiServices`, `ItemServlet`); see the guide in `docs` for details.
+Note that the entity manager services take part in the transactions of the transaction manager of the
+JPA extender, not in the JTA transactions of GlassFish: demarcate them with the `UserTransaction`
+service of the extender.
 
 ##### Relation to the user manual
 

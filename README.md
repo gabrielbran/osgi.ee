@@ -3,7 +3,7 @@ Remark: With the release of the [OSGi enterprise edition R7][1], OSGi-CDI integr
 #### Jakarta EE 11 / GlassFish 8.0.4
 Version 2.0.0 of the bundles targets Jakarta EE 11 (the `jakarta.*` namespace) and Java 21. It is built and tested
 against the OSGi runtime embedded in [GlassFish 8.0.4][6]:
-* CDI 4.1, using the Weld 6.0 bundle of GlassFish.
+* CDI 4.1, using Weld 6.0.4 embedded in the CDI extender (the version GlassFish ships).
 * Jakarta Persistence 3.2, using EclipseLink 5.0 of GlassFish.
 * Jakarta Transactions 2.0.
 * Jakarta Faces 4.1 (optional integration in the CDI extender).
@@ -15,13 +15,15 @@ against the OSGi runtime embedded in [GlassFish 8.0.4][6]:
 | `eclipselink.extender` | Migrated |
 | `datasource.factory` | Migrated (Commons DBCP 2) |
 | `osgi.ee.sample` | New: sample bundle using the JPA and CDI extenders |
+| `osgi.ee.sample.web` | New: web application (WAR) using the services of the sample bundle |
 | `glassfish` | New: collects the bundles to deploy into GlassFish |
 | `osgi.ee.extender.web` | Not migrated: GlassFish 8 provides no OSGi HTTP service |
 | `hibernate.extender` | Not migrated: `hibernate-osgi` does not exist anymore since Hibernate 6 |
 | `slf4j-jul-bridge` | Not migrated: GlassFish itself logs via java.util.logging |
 
 Build with `mvn clean install` (Java 21) and see [glassfish/README.md](glassfish/README.md) for deploying and
-configuring the bundles in GlassFish. The modules that are not migrated still use `javax.*` and are not part of
+configuring the bundles in GlassFish. A detailed guide (in Spanish) is available in
+[docs/guia-glassfish-8.md](docs/guia-glassfish-8.md). The modules that are not migrated still use `javax.*` and are not part of
 the Maven build. The user manual ([jee-extender.odt](jee-extender.odt)) describes version 1 and therefore
 still refers to the `javax.*` packages.
 

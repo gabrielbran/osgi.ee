@@ -28,6 +28,7 @@
         <module>eclipselink.extender</module>
         <module>datasource.factory</module>
         <module>osgi.ee.sample</module>
+        <module>osgi.ee.sample.web</module>
         <module>glassfish</module>
     </modules>
 
@@ -204,6 +205,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.4.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
