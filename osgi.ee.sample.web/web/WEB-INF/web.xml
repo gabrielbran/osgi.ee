@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
+         version="6.1">
+    <!-- Requests below /tx/ run in a transaction of the transaction manager of the JPA extender.
+         The filter class comes from the osgi.ee.extender.jpa bundle (package osgi.jta.servlet.filter). -->
+    <filter>
+        <filter-name>transaction</filter-name>
+        <filter-class>osgi.jta.servlet.filter.TransactionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>transaction</filter-name>
+        <url-pattern>/tx/*</url-pattern>
+    </filter-mapping>
+</web-app>
