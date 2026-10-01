@@ -61,6 +61,36 @@ class PersistenceUnitDefinitionTest {
         assertTrue(b.properties.isEmpty());
     }
 
+    /**
+     * The example of the user manual (section 3.3.2): the data source reference is surrounded by
+     * white space, which must not end up in the reference.
+     */
+    @Test
+    void parsesManualExample() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<persistence version=\"2.1\" xmlns=\"http://xmlns.jcp.org/xml/ns/persistence\"\n"
+                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+                + "  xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/persistence\n"
+                + "    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd\">\n"
+                + "  <persistence-unit name=\"Orders\" transaction-type=\"JTA\">\n"
+                + "    <jta-data-source>\n"
+                + "      osgi:service/javax.sql.DataSource/(name=OrdersDS)\n"
+                + "    </jta-data-source>\n"
+                + "    <class>orders.objects.Order</class>\n"
+                + "    <exclude-unlisted-classes>true</exclude-unlisted-classes>\n"
+                + "  </persistence-unit>\n"
+                + "</persistence>\n";
+        List<PersistenceUnitDefinition> units = PersistenceUnitDefinition.fromFile(
+                new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        assertEquals(1, units.size());
+        PersistenceUnitDefinition unit = units.get(0);
+        assertEquals("Orders", unit.name);
+        assertEquals("JTA", unit.transactionType);
+        assertEquals("osgi:service/javax.sql.DataSource/(name=OrdersDS)", unit.jtaDs);
+        assertEquals(List.of("orders.objects.Order"), unit.classes);
+        assertTrue(unit.excludeUnlisted);
+    }
+
     @Test
     void ignoresUnknownNamespace() throws Exception {
         assertTrue(parse("urn:unknown", "1.0", "<persistence-unit name=\"a\"/>").isEmpty());

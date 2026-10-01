@@ -47,8 +47,11 @@ require the `osgi.ee` capability `JavaSE/compact1`, which GlassFish does not dec
 
         cp glassfish/target/bundles/*.jar $GLASSFISH_HOME/glassfish/domains/domain1/autodeploy/bundles/
 
-2. Add the JDBC driver as OSGi bundle to the same directory (for example `h2-2.5.252.jar`). The data
-   source factory loads the driver class configured, via a dynamic import.
+2. Make the JDBC driver available to the data source factory, in one of two ways:
+   - deploy the driver as OSGi bundle into the same directory (for example `h2-2.5.252.jar`); the data
+     source factory loads the configured driver class via a dynamic import;
+   - or, as described in the user manual (section 3.3.1), attach the driver jar with a fragment bundle
+     whose host is `datasource.factory`.
 
 3. Create the data sources with configuration files in the same directory. File Install translates a
    file named `<factory pid>-<name>.cfg` into a factory configuration:
@@ -111,6 +114,23 @@ XA transactions after a crash. Use it with a single database, or deploy a full t
 - `hibernate.extender`: depends on `hibernate-osgi`, which no longer exists since Hibernate 6.
 - `slf4j-jul-bridge`: GlassFish logs via java.util.logging; redirecting that to SLF4J would take
   over the logging of the server.
+
+##### Relation to the user manual
+
+The [user manual](../jee-extender.odt) (v1.0.0) describes the JEE7 version. For version 2.0.0 on
+GlassFish 8 the following applies per section:
+
+| Section | On GlassFish 8 |
+|---|---|
+| 2 Installation | Not applicable: build with Maven and deploy as described above. The `Runtime` target platform contains the JEE7 dependencies. |
+| 3 JPA | Applies, with `jakarta.persistence` instead of `javax.persistence`. The data source reference stays `osgi:service/javax.sql.DataSource/<filter>` (`javax.sql` is part of Java). |
+| 3.3.1 Data source configuration | Applies. With File Install the configuration is a `.cfg` file instead of the `org.avineas.cm.persister` format. |
+| 3.3.3 Pre-processing | The system property read by the code is `osgi.jpa.transform` (the manual says `osgi.jpa.transformer`); its value is the path of the XSL file: `-Dosgi.jpa.transform=/opt/persistence-transformer.xsl`. A transformation written for the `xmlns.jcp.org` namespace does not match `persistence.xml` files in the `jakarta.ee` namespace. |
+| 4 JTA | Applies, with `jakarta.transaction`. The transaction manager is disabled with the system property `osgi.extender.jta.tm=false`; the `service.ranking` configuration mentioned in the manual is not implemented. The `TransactionFilter` needs a web container, see below. |
+| 5 Web extender | Not available (no OSGi HTTP service). |
+| 6.1 - 6.3 CDI, `@ServiceReference`, `@Service` | Apply, with the `jakarta.*` CDI packages. A `beans.xml` is still not needed. |
+| 6.4 Request/session scopes, 6.5 `@ViewScoped` | Need the `ScopeListener` in a web application bundle, so not usable. `@ComponentScoped` does not depend on the web layer. |
+| 7 JSF | Not available: needs an implementation of chapter 128 (web application bundles). |
 
 ##### Sample
 
